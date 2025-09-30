@@ -12,22 +12,24 @@ def safe_imread(f, flags=cv2.IMREAD_COLOR):
 
 patches.imread = safe_imread
 
-model = YOLO('yolo11s.pt')
+import torch, os
+if torch.cuda.is_available():
+    device = 0             # first CUDA GPU; for multi-GPU use "0,1" (string)
+    print(f"Using CUDA → {torch.cuda.get_device_name(0)}")
+else:
+    device = "cpu"
+    print("CUDA not available; using CPU")
 
-device = "cpu"
-try:
-    import torch
-    if torch.backends.mps.is_available():
-        device = "mps"
-except Exception:
-    pass
+model = YOLO("yolo11s.pt")
 
 results = model.train(
-    data='data.yaml',
+    data="data.yaml",
     imgsz=1280,
     epochs=100,
-    batch=2,
-    device=device,
+    batch=8,          # raise this on GPU if memory allows
+    device=device,    # now actually uses CUDA
+    workers=8,
+    amp=True,         # mixed precision for speed on CUDA
 )
-
 path = model.export(format="onnx")
+print("Exported:", path)
