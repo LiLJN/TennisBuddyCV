@@ -20,7 +20,7 @@ else:
     device = "cpu"
     print("CUDA not available; using CPU")
 
-model = YOLO("yolo11s.pt")
+model = YOLO("yolo11n.pt")
 
 results = model.train(
     data="data.yaml",
@@ -32,4 +32,4 @@ results = model.train(
     amp=True,         # mixed precision for speed on CUDA
 )
 path = model.export(format="onnx")
-print("Exported:", path)
+print("Exportgit add -A ed:", path)
