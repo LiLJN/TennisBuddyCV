@@ -13,9 +13,17 @@ def safe_imread(f, flags=cv2.IMREAD_COLOR):
 patches.imread = safe_imread
 
 import torch, os
-if torch.cuda.is_available():
-    device = 0             # first CUDA GPU; for multi-GPU use "0,1" (string)
-    print(f"Using CUDA → {torch.cuda.get_device_name(0)}")
+# if torch.cuda.is_available():
+#     device = 0             # first CUDA GPU; for multi-GPU use "0,1" (string)
+#     print(f"Using CUDA → {torch.cuda.get_device_name(0)}")
+# else:
+#     device = "cpu"
+#     print("CUDA not available; using CPU")
+if torch.cuda.is_available() and torch.cuda.device_count() > 0:
+    num_gpus = torch.cuda.device_count()
+    device = ",".join(str(i) for i in range(num_gpus))  # e.g., "0,1,2,3,4,5,6,7"
+    gpu_names = [torch.cuda.get_device_name(i) for i in range(num_gpus)]
+    print(f"Using {num_gpus} CUDA GPUs → {gpu_names}")
 else:
     device = "cpu"
     print("CUDA not available; using CPU")
