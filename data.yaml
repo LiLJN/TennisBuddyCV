@@ -2,8 +2,8 @@ train: ../train/images
 val: ../valid/images
 test: ../test/images
 
-nc: 5
-names: ['Tennis-Ball', 'Tennis-ball', 'TennisBall', 'tennis', 'tennis-ball']
+nc: 1
+names: ['Tennis-Ball']
 
 roboflow:
   workspace: uc-berkely-w210-tracer
