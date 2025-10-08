@@ -20,13 +20,13 @@ else:
     device = "cpu"
     print("CUDA not available; using CPU")
 
-model = YOLO("yolo11n.pt")
+model = YOLO("yolov8s.pt")
 
 results = model.train(
     data="data.yaml",
     imgsz=1280,
-    epochs=100,
-    batch=8,          # raise this on GPU if memory allows
+    epochs=250,
+    batch=16,          # raise this on GPU if memory allows
     device=device,    # now actually uses CUDA
     workers=8,
     amp=True,         # mixed precision for speed on CUDA
